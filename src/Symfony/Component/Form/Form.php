@@ -524,11 +524,7 @@ class Form implements \IteratorAggregate, FormInterface
         try {
             // Normalize data to unified representation
             $normData = $this->clientToNorm($clientData);
-            $synchronized = true;
-        } catch (TransformationFailedException $e) {
-        }
 
-        if ($synchronized) {
             // Hook to change content of the data in the normalized
             // representation
             $event = new FilterDataEvent($this, $normData);
@@ -538,6 +534,9 @@ class Form implements \IteratorAggregate, FormInterface
             // Synchronize representations - must not change the content!
             $appData = $this->normToApp($normData);
             $clientData = $this->normToClient($normData);
+
+            $synchronized = true;
+        } catch (TransformationFailedException $e) {
         }
 
         $this->bound = true;
